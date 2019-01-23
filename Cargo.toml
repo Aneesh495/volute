@@ -1,0 +1,36 @@
+[package]
+name = "volute"
+version = "0.1.0"
+edition = "2021"
+authors = ["Aneesh <aneeshkrishnaparthasarathy@gmail.com>"]
+description = "A programmable stream transformation and reactive rule fabric driven by embedded Rhai pipelines"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+rhai = { version = "1.20", features = ["sync", "serde", "decimal", "metadata"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde_yaml = "0.9"
+clap = { version = "4.5", features = ["derive"] }
+tokio = { version = "1.38", features = ["full"] }
+crossbeam-channel = "0.5"
+parking_lot = "0.12"
+regex = "1.10"
+sha2 = "0.10"
+hmac = "0.12"
+md-5 = "0.10"
+uuid = { version = "=1.10.0", features = ["v4", "fast-rng"] }
+chrono = { version = "0.4", features = ["serde"] }
+colored = "2.1"
+itertools = "0.13"
+thiserror = "1.0"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+
+[[bin]]
+name = "volute"
+path = "src/main.rs"
+
+[lib]
+name = "volute"
+path = "src/lib.rs"
