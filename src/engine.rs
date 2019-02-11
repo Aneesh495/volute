@@ -23,6 +23,7 @@ impl VoluteEngine {
         engine.set_max_string_size(1_000_000);
         engine.set_max_array_size(100_000);
         engine.set_max_map_size(100_000);
+        engine.set_max_expr_depths(256, 256);
 
         crate::packages::register_all(&mut engine);
 
