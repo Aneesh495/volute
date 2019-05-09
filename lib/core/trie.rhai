@@ -1,70 +1,74 @@
 /*
- * Prefix Tree (Trie) Data Structure
+ * Arena-Allocated Prefix Tree (Trie)
  *
- * Implements string insertion, exact lookup, prefix matching,
- * and autocomplete suggestions.
+ * Implements prefix trie using indexed node arena for efficient value storage.
  */
 
-// Initialize new Trie node
-fn new_trie_node() {
-    return #{
-        children: #{}, // char -> node
+// Initialize new Trie using arena indexing
+fn new_trie() {
+    let root_node = #{
+        children: #{},
         is_terminal: false,
         value: ()
     };
-}
-
-// Initialize new empty Trie
-fn new_trie() {
     return #{
-        root: new_trie_node(),
+        nodes: [root_node],
         word_count: 0
     };
 }
 
-// Insert word and associated value into Trie
+// Insert word into Trie arena
 fn trie_insert(trie, word, value) {
-    let curr = trie.root;
+    let curr_idx = 0;
     for i in 0..word.len() {
         let ch = word.sub_string(i, 1);
-        if !curr.children.contains(ch) {
-            curr.children[ch] = new_trie_node();
+        if !trie.nodes[curr_idx].children.contains(ch) {
+            let next_idx = trie.nodes.len();
+            let new_node = #{
+                children: #{},
+                is_terminal: false,
+                value: ()
+            };
+            trie.nodes.push(new_node);
+            trie.nodes[curr_idx].children[ch] = next_idx;
+            curr_idx = next_idx;
+        } else {
+            curr_idx = trie.nodes[curr_idx].children[ch];
         }
-        curr = curr.children[ch];
     }
-    if !curr.is_terminal {
+    if !trie.nodes[curr_idx].is_terminal {
         trie.word_count += 1;
     }
-    curr.is_terminal = true;
-    curr.value = value;
+    trie.nodes[curr_idx].is_terminal = true;
+    trie.nodes[curr_idx].value = value;
     return trie;
 }
 
-// Search for exact word; returns value or unit
+// Search word in Trie; returns value or unit
 fn trie_search(trie, word) {
-    let curr = trie.root;
+    let curr_idx = 0;
     for i in 0..word.len() {
         let ch = word.sub_string(i, 1);
-        if !curr.children.contains(ch) {
+        if !trie.nodes[curr_idx].children.contains(ch) {
             return ();
         }
-        curr = curr.children[ch];
+        curr_idx = trie.nodes[curr_idx].children[ch];
     }
-    if curr.is_terminal {
-        return curr.value;
+    if trie.nodes[curr_idx].is_terminal {
+        return trie.nodes[curr_idx].value;
     }
     return ();
 }
 
 // Check if any word starts with prefix
 fn trie_starts_with(trie, prefix) {
-    let curr = trie.root;
+    let curr_idx = 0;
     for i in 0..prefix.len() {
         let ch = prefix.sub_string(i, 1);
-        if !curr.children.contains(ch) {
+        if !trie.nodes[curr_idx].children.contains(ch) {
             return false;
         }
-        curr = curr.children[ch];
+        curr_idx = trie.nodes[curr_idx].children[ch];
     }
     return true;
 }

@@ -24,8 +24,8 @@ fn add_node(g, node) {
 
 // Add directed edge with weight
 fn add_edge(g, from_node, to_node, weight) {
-    add_node(g, from_node);
-    add_node(g, to_node);
+    g = add_node(g, from_node);
+    g = add_node(g, to_node);
     g.adj[from_node].push(#{ to: to_node, weight: weight * 1.0 });
     return g;
 }
@@ -76,7 +76,6 @@ fn dijkstra(g, start_node) {
     }
 
     while !unvisited.is_empty() {
-        // Find unvisited node with minimum distance
         let min_node = ();
         let min_dist = 1000000000.0;
         let min_idx = -1;
