@@ -1,4 +1,5 @@
 /target
+scripts/
 **/*.rs.bk
 *.swp
 *~

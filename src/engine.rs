@@ -26,6 +26,8 @@ impl VoluteEngine {
         engine.set_max_expr_depths(256, 256);
 
         crate::packages::register_all(&mut engine);
+        let resolver = rhai::module_resolvers::FileModuleResolver::new_with_path_and_extension(".", "rhai");
+        engine.set_module_resolver(resolver);
 
         Self {
             engine,
