@@ -4,21 +4,21 @@
  * Implements Haversine distance in meters, initial bearing, and Manhattan distance.
  */
 
-const EARTH_RADIUS_METERS = 6371000.0;
-const PI = 3.141592653589793;
-
 // Convert degrees to radians
 fn to_radians(deg) {
-    return (deg * 1.0) * PI / 180.0;
+    let pi = 3.141592653589793;
+    return (deg * 1.0) * pi / 180.0;
 }
 
 // Convert radians to degrees
 fn to_degrees(rad) {
-    return (rad * 1.0) * 180.0 / PI;
+    let pi = 3.141592653589793;
+    return (rad * 1.0) * 180.0 / pi;
 }
 
 // Compute Haversine distance in meters between two (lat, lon) coordinates
 fn haversine_distance(lat1, lon1, lat2, lon2) {
+    let earth_radius = 6371000.0;
     let phi1 = to_radians(lat1);
     let phi2 = to_radians(lat2);
     let delta_phi = to_radians(lat2 - lat1);
@@ -31,7 +31,7 @@ fn haversine_distance(lat1, lon1, lat2, lon2) {
             phi1.cos() * phi2.cos() * sin_half_lambda * sin_half_lambda;
 
     let c = 2.0 * a.sqrt().atan2((1.0 - a).sqrt());
-    return EARTH_RADIUS_METERS * c;
+    return earth_radius * c;
 }
 
 // Compute initial forward bearing in degrees from point 1 to point 2

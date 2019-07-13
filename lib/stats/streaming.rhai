@@ -68,7 +68,7 @@ fn update_ewma(ewma, x) {
     } else {
         ewma.value = ewma.alpha * val + (1.0 - ewma.alpha) * ewma.value;
     }
-    return ewma.value;
+    return ewma;
 }
 
 // Initialize Holt linear trend model
@@ -89,13 +89,13 @@ fn update_holt(holt, x) {
         holt.level = val;
         holt.trend = 0.0;
         holt.is_init = true;
-        return val;
+        return holt;
     }
     let prev_level = holt.level;
     let prev_trend = holt.trend;
     holt.level = holt.alpha * val + (1.0 - holt.alpha) * (prev_level + prev_trend);
     holt.trend = holt.beta * (holt.level - prev_level) + (1.0 - holt.beta) * prev_trend;
-    return holt.level + holt.trend;
+    return holt;
 }
 
 // Forecast H steps ahead using Holt linear model

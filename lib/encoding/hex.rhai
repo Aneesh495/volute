@@ -2,21 +2,24 @@
  * Hexadecimal Encoding and Decoding Utilities
  */
 
-// Hex lookup table
-const HEX_CHARS = "0123456789abcdef";
+fn hex_chars() {
+    return "0123456789abcdef";
+}
 
 // Convert single byte value to two hex characters
 fn byte_to_hex(b) {
+    let chars = hex_chars();
     let hi = (b / 16) % 16;
     let lo = b % 16;
-    return HEX_CHARS.sub_string(hi, 1) + HEX_CHARS.sub_string(lo, 1);
+    return chars.sub_string(hi, 1) + chars.sub_string(lo, 1);
 }
 
 // Convert hex character to integer value
 fn hex_char_to_val(ch) {
+    let chars = hex_chars();
     let c = ch.to_lower();
     for i in 0..16 {
-        if HEX_CHARS.sub_string(i, 1) == c {
+        if chars.sub_string(i, 1) == c {
             return i;
         }
     }

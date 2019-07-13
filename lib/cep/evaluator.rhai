@@ -16,9 +16,10 @@ fn new_cep_engine() {
 // Register pattern into CEP engine
 fn register_pattern(engine, pattern) {
     engine.patterns.push(pattern);
+    return engine;
 }
 
-// Process single event through CEP engine
+// Process single event through CEP engine; returns [updated_engine, new_alerts]
 fn process_event(engine, event) {
     let now_ms = event.timestamp_ns / 1000000;
     let new_alerts = [];
@@ -56,5 +57,5 @@ fn process_event(engine, event) {
         }
     }
 
-    return new_alerts;
+    return [engine, new_alerts];
 }

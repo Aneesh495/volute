@@ -9,7 +9,7 @@
 fn filter(arr, pred) {
     let result = [];
     for item in arr {
-        if pred(item) {
+        if call(pred, item) {
             result.push(item);
         }
     }
@@ -20,7 +20,7 @@ fn filter(arr, pred) {
 fn map(arr, mapper) {
     let result = [];
     for item in arr {
-        result.push(mapper(item));
+        result.push(call(mapper, item));
     }
     return result;
 }
@@ -29,7 +29,7 @@ fn map(arr, mapper) {
 fn fold(arr, initial, folder) {
     let acc = initial;
     for item in arr {
-        acc = folder(acc, item);
+        acc = call(folder, acc, item);
     }
     return acc;
 }
@@ -41,7 +41,7 @@ fn reduce(arr, reducer) {
     }
     let acc = arr[0];
     for i in 1..arr.len() {
-        acc = reducer(acc, arr[i]);
+        acc = call(reducer, acc, arr[i]);
     }
     return acc;
 }
@@ -51,7 +51,7 @@ fn partition(arr, pred) {
     let matches = [];
     let non_matches = [];
     for item in arr {
-        if pred(item) {
+        if call(pred, item) {
             matches.push(item);
         } else {
             non_matches.push(item);
@@ -102,7 +102,7 @@ fn window(arr, size, step) {
 fn group_by(arr, key_extractor) {
     let groups = #{};
     for item in arr {
-        let key = key_extractor(item);
+        let key = call(key_extractor, item);
         if !groups.contains(key) {
             groups[key] = [];
         }
@@ -115,7 +115,7 @@ fn group_by(arr, key_extractor) {
 fn key_by(arr, key_extractor) {
     let keyed = #{};
     for item in arr {
-        let key = key_extractor(item);
+        let key = call(key_extractor, item);
         keyed[key] = item;
     }
     return keyed;
@@ -181,7 +181,7 @@ fn flatten(nested) {
 fn flat_map(arr, mapper) {
     let result = [];
     for item in arr {
-        let mapped = mapper(item);
+        let mapped = call(mapper, item);
         if type_of(mapped) == "array" {
             for sub_item in mapped {
                 result.push(sub_item);

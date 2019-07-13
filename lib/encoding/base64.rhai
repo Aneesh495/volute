@@ -2,12 +2,15 @@
  * Base64 Encoding and Decoding Algorithms
  */
 
-const B64_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+fn b64_chars() {
+    return "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+}
 
 // Decode base64 character to 6-bit value
 fn b64_val(ch) {
+    let chars = b64_chars();
     for i in 0..64 {
-        if B64_CHARS.sub_string(i, 1) == ch {
+        if chars.sub_string(i, 1) == ch {
             return i;
         }
     }

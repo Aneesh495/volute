@@ -4,10 +4,13 @@
  * Implements Base32 geohash encoding and decoding.
  */
 
-const BASE32_ALPHABET = "0123456789bcdefghjkmnpqrstuvwxyz";
+fn base32_alphabet() {
+    return "0123456789bcdefghjkmnpqrstuvwxyz";
+}
 
 // Encode latitude and longitude to Geohash string of specified precision
 fn encode_geohash(lat, lon, precision) {
+    let alphabet = base32_alphabet();
     let min_lat = -90.0;
     let max_lat = 90.0;
     let min_lon = -180.0;
@@ -42,7 +45,7 @@ fn encode_geohash(lat, lon, precision) {
         bit += 1;
 
         if bit == 5 {
-            geohash += BASE32_ALPHABET.sub_string(ch, 1);
+            geohash += alphabet.sub_string(ch, 1);
             bit = 0;
             ch = 0;
         }
