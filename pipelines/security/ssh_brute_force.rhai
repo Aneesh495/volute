@@ -14,7 +14,7 @@ fn init_detector(threshold_failures, window_ms) {
     };
 }
 
-// Process authentication event
+// Process authentication event; returns [updated_state, alert_or_unit]
 fn process_auth_event(state, event) {
     let now_ms = event.timestamp_ns / 1000000;
     let ip = event.payload["source_ip"];
@@ -35,31 +35,32 @@ fn process_auth_event(state, event) {
 
     if success {
         if recent.len() >= state.threshold {
-            // Suspicious successful login following repeated failures
             state.attempts[ip] = [];
-            return #{
+            let alert = #{
                 alert: "CRITICAL_AUTH_AFTER_BRUTE_FORCE",
                 source_ip: ip,
                 recent_failures: recent.len(),
                 severity: "CRITICAL",
                 action: "INVESTIGATE"
             };
+            return [state, alert];
         }
         state.attempts[ip] = recent;
-        return ();
+        return [state, ()];
     } else {
         recent.push(now_ms);
         state.attempts[ip] = recent;
 
         if recent.len() >= state.threshold {
-            return #{
+            let alert = #{
                 alert: "SSH_BRUTE_FORCE_DETECTED",
                 source_ip: ip,
                 failures_count: recent.len(),
                 severity: "HIGH",
                 action: "TEMPORARY_BLOCK"
             };
+            return [state, alert];
         }
-        return ();
+        return [state, ()];
     }
 }
