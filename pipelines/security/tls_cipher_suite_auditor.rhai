@@ -161,7 +161,7 @@ fn audit_client_hello(hello_event) {
     let curves = if hello_event.contains("curves") { hello_event["curves"] } else { [] };
     let ec_points = if hello_event.contains("ec_points") { hello_event["ec_points"] } else { [] };
     let ja3_raw = build_ja3_string(version, ciphers, extensions, curves, ec_points);
-    let ja3_hash = crypto::md5(ja3_raw);
+    let ja3_hash = md5(ja3_raw);
     
     return #{
         version: version_name,
